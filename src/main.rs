@@ -20,12 +20,7 @@ impl Player {
         }
     }
     fn new(name: String, hp: i32, atk: i32, def: i32) -> Player {
-        Player {
-            name,
-            hp,
-            atk,
-            def,
-        }
+        Player { name, hp, atk, def }
     }
 }
 
@@ -55,6 +50,11 @@ fn fight(player1: &mut Player, player2: &mut Player) {
         }
         round += 1;
     }
+    if player1.is_alive() {
+        println!("{} wins!", player1.name)
+    } else {
+        println!("{} wins!", player2.name)
+    }
 }
 
 fn main() {
@@ -63,9 +63,5 @@ fn main() {
 
     fight(&mut player1, &mut player2);
 
-    if player1.is_alive() {
-        println!("{} wins!", player1.name)
-    } else {
-        println!("{} wins!", player2.name)
-    }
+    
 }

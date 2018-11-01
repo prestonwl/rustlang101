@@ -13,6 +13,7 @@ struct Player {
 
 //methods
 impl Player {
+    //check if players HP <= 0
     fn is_alive(&self) -> bool {
         if self.hp > 0 {
             return true;
@@ -20,6 +21,7 @@ impl Player {
             return false;
         }
     }
+    // damage = attacker atk value - a random number between 0 and defenders def value
     fn damage_received(&self, atk: i32) -> i32 {
         let mut randatk: i32 = 0;
         let mut rng = thread_rng();
@@ -30,6 +32,7 @@ impl Player {
 
 // related functions
 impl Player {
+    // instanciate a new player
     fn new(name: String, hp: i32, atk: i32, def: i32) -> Player {
         Player { name, hp, atk, def }
     }
@@ -59,6 +62,7 @@ impl Player {
             round += 1;
         }
     }
+    // after fight loop if player1 HP is > 0 he wins, else player2 wins
     fn who_wins(player1: Player, player2: Player) {
         if player1.is_alive() {
             println!("{} has {} hp, {} wins!",player2.name, player2.hp, player1.name)

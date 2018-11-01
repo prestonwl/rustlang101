@@ -42,7 +42,7 @@ fn main() {
     let mut randatk: i32 = 0;
 
     while !done {
-        println!("round {} begin", round);
+        println!("!! round {} begin !!", round);
 
         randatk = player2.atk - rng.gen_range(0, player1.def);
         player1.hp -= randatk;

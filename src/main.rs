@@ -11,6 +11,7 @@ struct Player {
     def: i32,
 }
 
+//methods
 impl Player {
     fn is_alive(&self) -> bool {
         if self.hp > 0 {
@@ -19,49 +20,57 @@ impl Player {
             return false;
         }
     }
-    fn new(name: String, hp: i32, atk: i32, def: i32) -> Player {
-        Player { name, hp, atk, def }
+    fn damage_received(&self, atk: i32) -> i32 {
+        let mut randatk: i32 = 0;
+        let mut rng = thread_rng();
+        randatk = atk - rng.gen_range(0, self.def);
+        return randatk;
     }
 }
 
-fn fight(player1: &mut Player, player2: &mut Player) {
-    let mut done = false;
-    let mut round = 1;
-    let mut rng = thread_rng();
-    let mut randatk: i32 = 0;
-
-    while !done {
-        println!("!! round {} begin !!", round);
-        randatk = player2.atk - rng.gen_range(0, player1.def);
-        player1.hp -= randatk;
-        println!("{} attacked {} for {}", player2.name, player1.name, randatk);
-        println!("{} has {} hp", player1.name, player1.hp);
-        if player1.is_alive() == false {
-            done = true;
-            break;
-        }
-        randatk = player1.atk - rng.gen_range(0, player2.def);
-        player2.hp -= randatk;
-        println!("{} attacked {} for {}", player1.name, player2.name, randatk);
-        println!("{} has {} hp", player2.name, player2.hp);
-        if player2.is_alive() == false {
-            done = true;
-            break;
-        }
-        round += 1;
+// related functions
+impl Player {
+    fn new(name: String, hp: i32, atk: i32, def: i32) -> Player {
+        Player { name, hp, atk, def }
     }
-    if player1.is_alive() {
-        println!("{} wins!", player1.name)
-    } else {
-        println!("{} wins!", player2.name)
+    //main game fighting loop
+    fn fight(player1: &mut Player, player2: &mut Player) {
+        let mut done = false;
+        let mut round = 1;
+
+        while !done {
+            let mut damage = player1.damage_received(player2.atk);
+            player1.hp -= damage;
+            println!("{} attacked {} for {}", player2.name, player1.name, damage);
+            println!("!! round {} begin !!", round);
+            println!("{} has {} hp", player1.name, player1.hp);
+            if player1.is_alive() == false {
+                done = true;
+                break;
+            }
+            damage = player2.damage_received(player1.atk);
+            player2.hp -= damage;
+            println!("{} attacked {} for {}", player2.name, player1.name, damage);
+            println!("{} has {} hp", player2.name, player2.hp);
+            if player2.is_alive() == false {
+                done = true;
+                break;
+            }
+            round += 1;
+        }
+    }
+    fn who_wins(player1: Player, player2: Player) {
+        if player1.is_alive() {
+            println!("{} has {} hp, {} wins!",player2.name, player2.hp, player1.name)
+        } else {
+            println!("{} has {} hp, {} wins!", player1.name, player1.hp, player2.name)
+        }
     }
 }
 
 fn main() {
     let mut player1 = Player::new(String::from("tim"), 100, 10, 10);
     let mut player2 = Player::new(String::from("jim"), 100, 10, 10);
-
-    fight(&mut player1, &mut player2);
-
-    
+    Player::fight(&mut player1, &mut player2);
+    Player::who_wins(player1, player2);
 }

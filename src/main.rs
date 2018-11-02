@@ -38,17 +38,14 @@ impl Player {
     }
     //main game fighting loop
     fn fight(player1: &mut Player, player2: &mut Player) {
-        let mut done = false;
         let mut round = 1;
-
-        while !done {
+        loop {
             let mut damage = player1.damage_received(player2.atk);
             player1.hp -= damage;
             println!("{} attacked {} for {}", player2.name, player1.name, damage);
             println!("!! round {} begin !!", round);
             println!("{} has {} hp", player1.name, player1.hp);
             if player1.is_alive() == false {
-                done = true;
                 break;
             }
             damage = player2.damage_received(player1.atk);
@@ -56,7 +53,6 @@ impl Player {
             println!("{} attacked {} for {}", player2.name, player1.name, damage);
             println!("{} has {} hp", player2.name, player2.hp);
             if player2.is_alive() == false {
-                done = true;
                 break;
             }
             round += 1;
@@ -65,9 +61,15 @@ impl Player {
     // after fight loop if player1 HP is > 0 he wins, else player2 wins
     fn who_wins(player1: Player, player2: Player) {
         if player1.is_alive() {
-            println!("{} has {} hp, {} wins!",player2.name, player2.hp, player1.name)
+            println!(
+                "{} has {} hp, {} wins!",
+                player1.name, player1.hp, player1.name
+            )
         } else {
-            println!("{} has {} hp, {} wins!", player1.name, player1.hp, player2.name)
+            println!(
+                "{} has {} hp, {} wins!",
+                player2.name, player2.hp, player2.name
+            )
         }
     }
 }
